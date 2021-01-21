@@ -9,35 +9,39 @@ namespace MultiDictionary
         static void Main(string[] args)
         {
             int n = int.Parse(Console.ReadLine());
-            Dictionary<string, List<double>> studentsGrades = new Dictionary<string, List<double>>();
+            Dictionary<string, List<decimal>> studentsInformation = new Dictionary<string, List<decimal>>();
 
             for (int i = 0; i < n; i++)
             {
-                var students = Console.ReadLine().Split();
-                var name = students[0];
-                var grades = double .Parse(students[1]);
+                string[] data = Console.ReadLine().Split(" ").ToArray();
+                string name = data[0];
+                decimal grade = decimal.Parse(data[1]);
 
-                if (!studentsGrades.ContainsKey(name))
+                if (!studentsInformation.ContainsKey(name))
                 {
-                    studentsGrades.Add(name, new List<double>());
+                    studentsInformation.Add(name, new List<decimal>());
+                    studentsInformation[name].Add(grade);
                 }
-
-                studentsGrades[name].Add(grades);
+                else
+                {
+                    studentsInformation[name].Add(grade);
+                }
             }
 
-            foreach (var pair in studentsGrades)
-            {
-                var name = pair.Key;
-                var grade = pair.Value;
-                var average = grade.Average();
 
+            foreach (var student in studentsInformation)
+            {
+                var name = student.Key;
+                var studentgrades = student.Value;
+                var avr = studentgrades.Average();
                 Console.Write($"{name} -> ");
 
-                foreach (var grades in grade)
+                foreach (var grade in studentgrades)
                 {
-                    Console.Write($"{grades:f2} ");
-                    Console.WriteLine($"(avg: {average:f2})");
+                    Console.Write($"{grade:f2} ");
+
                 }
+                Console.WriteLine($"(avg: {avr:f2})");
             }
         }
     }

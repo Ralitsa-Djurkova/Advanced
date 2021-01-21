@@ -8,36 +8,34 @@ namespace _03NestedDictionary
     {
         static void Main(string[] args)
         {
-            Dictionary<string, Dictionary<string, double>> shops = new Dictionary<string, Dictionary<string, double>>();
+            string command = Console.ReadLine();
+            Dictionary<string, Dictionary<string, double>> products = new Dictionary<string, Dictionary<string, double>>();
 
-            string input = Console.ReadLine();
-
-            while (input != "Revision")
+            while (command != "Revision")
             {
-                string[] splettet = input.Split();
-                string shop = splettet[0];
-                string product = splettet[1];
-                double price = double.Parse(splettet[2]);
+                string[] tokens = command.Split(", ");
+                string shopName = tokens[0];
+                string product = tokens[1];
+                double productPrice = double.Parse(tokens[2]);
 
-                if (!shops.ContainsKey(shop))
+                if (!products.ContainsKey(shopName))
                 {
-                    shops.Add(shop, new Dictionary<string, double>());
+                    products.Add(shopName, new Dictionary<string, double>());
+
                 }
-                if (!shops[shop].ContainsKey(product))
-                {
-                    shops[shop].Add(product, price);
-                }
-                 input = Console.ReadLine();
+                products[shopName].Add(product, productPrice);
+                command = Console.ReadLine();
             }
-            shops = shops.OrderBy(x => x.Key).ToDictionary(x => x.Key, x => x.Value);
-            foreach (var shop in shops)
+            var orderShop = products.OrderBy(x => x.Key).ToDictionary(x => x.Key, x => x.Value);
+            foreach (var item in orderShop)
             {
-                Console.WriteLine($"{shop.Key}->");
+                Console.WriteLine($"{item.Key}->");
 
-                foreach (var product in shop.Value)
+                foreach (var collect in item.Value)
                 {
-                    Console.WriteLine($"Product: {product.Key} Price: {product.Value}");
+                    Console.WriteLine($"Product: {collect.Key}, Price: {collect.Value}");
                 }
+
             }
         }
     }
